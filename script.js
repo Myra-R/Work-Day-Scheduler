@@ -3,7 +3,7 @@ var curDay = document.querySelector("#currentDay");
 document.querySelector("#currentDay").textContent = moment().format('LLL');
 var currentTime = moment().format('HH')
 console.log(currentTime)
-var hour = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+var hour = [9, 10, 11, 12, 13, 14, 15, 16, 17];
 /*
  <div class="row time-block">
         <div class="col-md-1">
@@ -48,23 +48,32 @@ function createPlan() {
         //textarea.setAttribute("class","description col-md-10");
         //if current time 
         if (currentTime == hour[i]) {
-            textarea.setAttribute("class", "description col-md-10 present " + hour[i]);
+            textarea.setAttribute("class", "description col-md-10 present ");
+            textarea.setAttribute("id", hour[i]);
 
         }
         if (currentTime > hour[i]) {
-            textarea.setAttribute("class", "description col-md-10 past " + hour[i]);
-
+            textarea.setAttribute("class", "description col-md-10 past ");
+            textarea.setAttribute("id", hour[i]);
         }
         if (currentTime < hour[i]) {
-            textarea.setAttribute("class", "description col-md-10 future " + hour[i]);
+            textarea.setAttribute("class", "description col-md-10 future ");
+            textarea.setAttribute("id", hour[i]);
+        }
 
+        if(localStorage.getItem($(textarea).attr("id")) != ""){
+            textarea.textContent = localStorage.getItem($(textarea).attr("id"));
+        }
+        else{
+            textarea.setAttribute("placeholder", "Enter text here...");
         }
         //currentTime==hour
         //add class present
         //if(past) currentTime-hour>0
 
         var btn = document.createElement("button");
-        btn.setAttribute("id", hour[i])
+        textarea.setAttribute("id", hour[i])
+        // btn.setAttribute("id", hour[i])
         btn.setAttribute("class", "saveBtn col-md-1 btn")
 
         var iframe = document.createElement("i");
@@ -80,21 +89,35 @@ function createPlan() {
    
         console.log("work")
     }
+function saveText(){
+    $("textarea").each(function(){
+        var textStorage = $(this).val();
+        console.log(textStorage);
+        localStorage.setItem($(this).attr("id"),textStorage);
+       
+      
+       
+    })
+}
 
+    $("button").click(function(){
+   saveText();
+})
 
     //create an onclick event.
     //grab the userinput and hour
     //set to local storage
+
     //.saveBtn
-    document.querySelector(".saveBtn").onclick = function () {
-        console.log(this.getAttribute("id"));
-        console.log(this.parentElement.children[1].value);
-        localStorage.setItem(this.getAttribute("id"), this.parentElement.children[1].value);
+    // document.querySelector(".saveBtn").onclick = function () {
+    //     console.log(this.getAttribute("id"));
+    //     console.log(this.parentElement.children[1].value);
+    //     localStorage.setItem(this.getAttribute("iframe"), this.parentElement.children[1].value);
 
-    };
+    // };
 
-    document.querySelector(".9").value(localStorage.getItem("9"));
-    console.log(localStorage.getItem("9"))
+    // // document.querySelector("iframe").value(localStorage.getItem("iframe"));
+    // console.log(localStorage.getItem("iframe"))
 }
 
 createPlan();
